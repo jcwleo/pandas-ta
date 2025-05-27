@@ -21,9 +21,10 @@ def combination(**kwargs):
     r = min(n, n - r)
     if r == 0:
         return 1
-
-    numerator   = reduce(mul, range(n, n - r, -1), 1)
-    denominator = reduce(mul, range(1, r + 1), 1)
+    
+    # Use math.prod for Python 3.8+
+    numerator = math.prod(range(n, n - r, -1))
+    denominator = math.prod(range(1, r + 1))
     return numerator // denominator
 
 
@@ -34,11 +35,20 @@ def df_error_analysis(dfA, dfB, **kwargs):
 
     # Find their differences
     diff = dfA - dfB
-    df = pd.DataFrame({'diff': diff.describe()})
-    extra = pd.DataFrame([diff.var(), diff.mad(), diff.sem(), dfA.corr(dfB, method=corr_method)], index=['var', 'mad', 'sem', 'corr'])
-
-    # Append the differences to the DataFrame
-    df = df['diff'].append(extra, ignore_index=False)[0]
+    
+    # Calculate descriptive statistics for the difference
+    desc_stats = diff.describe()
+    
+    # Calculate additional statistics
+    var_val = diff.var()
+    mad_val = (diff - diff.mean()).abs().mean() # Replaced diff.mad()
+    sem_val = diff.sem()
+    corr_val = dfA.corr(dfB, method=corr_method) # Assuming dfA and dfB are Series for correlation
+    
+    extra_stats = pd.Series([var_val, mad_val, sem_val, corr_val], index=['var', 'mad', 'sem', 'corr'])
+    
+    # Concatenate descriptive statistics with extra statistics
+    df = pd.concat([desc_stats, extra_stats])
 
     # For plotting
     # diff.hist()
@@ -127,7 +137,7 @@ def signed_series(series:pd.Series, initial:int = None):
 
 def verify_series(series:pd.Series):
     """If a Pandas Series return it."""
-    if series is not None and isinstance(series, pd.core.series.Series):
+    if series is not None and isinstance(series, pd.Series): # Changed to pd.Series
         return series
 
 
