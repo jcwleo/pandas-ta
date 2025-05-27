@@ -14,12 +14,13 @@ setup(
     url = "https://github.com/twopirllc/pandas-ta",
     maintainer="Kevin Johnson",
     maintainer_email="appliedmathkj@gmail.com",
-    # install_requires=['numpy','pandas'],
+    install_requires=['numpy>=2.2.6', 'pandas>=2.2.3'],
+    python_requires='>=3.12',
     download_url = "https://github.com/twopirllc/pandas-ta.git",
     keywords = ['technical analysis', 'python3', 'pandas'],
     license="The MIT License (MIT)",
     classifiers = [
-        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.12',
         'Development Status :: 3 - Alpha',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
@@ -30,7 +31,6 @@ setup(
     package_data={
         'data': ['data/*.csv'],
     },
-    install_requires=['pandas'],
 
     # List additional groups of dependencies here (e.g. development dependencies).
     # You can install these using the following syntax, for example:

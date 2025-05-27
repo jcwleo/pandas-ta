@@ -132,7 +132,7 @@ class AnalysisIndicators(BasePandasObject):
             else:
                 self.help()
 
-        except:
+        except Exception:
             self.help()
 
 
